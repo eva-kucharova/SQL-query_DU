@@ -1,0 +1,43 @@
+DOMÁCÍ UKOL Z 6.11.2020
+Který výrobce působí v nejvíce segmentech?
+
+SELECT m.manufacturer, COUNT(DISTINCT p.segment) AS pusobnost
+FROM manufacturer m
+INNER JOIN product p ON m.manufacturerID = p.manufacturerID
+GROUP BY m.manufacturer
+ORDER BY pusobnost DESC;
+
+
+Které státy nám nejvíce vydělávají v různých kategoriích? Stačí pouze vypsat celkové tržby na úrovni státu a kategorie a pak seřadit.
+SELECT c.state, p. category, SUM(s.revenue) AS trzby 
+FROM sales s
+INNER JOIN country c ON s.ZIP = c.ZIP
+INNER JOIN product p ON s.productID = p.productID
+GROUP BY c.state, p.category
+ORDER BY trzby DESC;
+
+Který výrobce prodal nejvíce výrobků v prosinci 2014?
+
+SELECT m.Manufacturer,SUM(s.Units) AS prodej 
+FROM product p
+INNER JOIN manufacturer m ON p.ManufacturerID = m.ManufacturerID
+INNER JOIN sales s ON p.productID = s.productID 
+WHERE s.date BETWEEN '2014-12-01' AND '2014-12-31'
+GROUP BY m.Manufacturer, s.date
+ORDER BY prodej DESC
+LIMIT 1;
+ 
+ 
+
+Na kterých kategoriích výrobků vydělává společnost Abbas nejvíce?
+SELECT p.Category,
+       SUM(s.Revenue) 
+  FROM product p
+       JOIN
+       Manufacturer m ON p.ManufacturerID = m.ManufacturerID
+       JOIN
+       sales s ON p.ProductID = s.ProductID
+ WHERE m.Manufacturer = 'Abbas'
+ GROUP BY p.Category
+ ORDER BY SUM(s.Revenue) DESC;
+
